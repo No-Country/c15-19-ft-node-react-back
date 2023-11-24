@@ -1,17 +1,31 @@
-const mongoose = require('mongoose')
+const mongoose = require("mongoose");
 
-const mongoAtlasUri =
-  "mongodb+srv://nicodev:nikokpo12@atlascluster.n2k82wh.mongodb.net/?retryWrites=true&w=majority";
+const DB_URI = "mongodb://localhost:27017/app";
 
-try {
-  // Connect to the MongoDB cluster
-  mongoose.connect(
-    mongoAtlasUri
-  );
-} catch (e) {
-  console.log("could not connect");
-}
+module.exports = () => {
+  const connect = () => {
+    mongoose
+      .connect(DB_URI)
+      .then(() => {
+        console.log("Connected to MongoDB");
+      })
+      .catch((err) => {
+        console.error("Error connecting to MongoDB:", err);
+      });
+  };
 
-const dbConnection = mongoose.connection;
-dbConnection.on("error", (err) => console.log(`Connection error ${err}`));
-dbConnection.once("open", () => console.log("Connected to DB!"));
+  connect();
+
+  // Eventos de conexión y error
+  mongoose.connection.on("connected", () => {
+    console.log("Mongoose connected to MongoDB");
+  });
+
+  mongoose.connection.on("error", (err) => {
+    console.error("Mongoose connection error:", err);
+  });
+
+  mongoose.connection.on("disconnected", () => {
+    console.log("Mongoose disconnected from MongoDB");
+  });
+};
