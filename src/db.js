@@ -1,31 +1,14 @@
 const mongoose = require("mongoose");
 
-const DB_URI = "mongodb://localhost:27017/app";
+const DB_URI = "mongodb://localhost:27017/crud";
 
-module.exports = () => {
-  const connect = () => {
-    mongoose
-      .connect(DB_URI)
-      .then(() => {
-        console.log("Connected to MongoDB");
-      })
-      .catch((err) => {
-        console.error("Error connecting to MongoDB:", err);
-      });
-  };
+const connect = async () => {
+  try {
+    await mongoose.connect(`mongodb://127.0.0.1:27017/crud`);
+    console.log(">>> DB connection established <<<")
+  } catch (error) {
+    console.log(error.message);
+  }
+}
 
-  connect();
-
-  // Eventos de conexión y error
-  mongoose.connection.on("connected", () => {
-    console.log("Mongoose connected to MongoDB");
-  });
-
-  mongoose.connection.on("error", (err) => {
-    console.error("Mongoose connection error:", err);
-  });
-
-  mongoose.connection.on("disconnected", () => {
-    console.log("Mongoose disconnected from MongoDB");
-  });
-};
+module.exports = connect
