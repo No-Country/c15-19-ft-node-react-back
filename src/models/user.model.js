@@ -12,7 +12,7 @@ const UserSchema = new Schema({
   },
   lastname: {
     type: String,
-    required: true,
+    required: true, 
   },
   password: {
     type: String,
@@ -20,52 +20,62 @@ const UserSchema = new Schema({
   },
   username: {
     type: String,
-    unique: true
+    unique: true,
   },
   picture: {
-    type: Buffer
+    type: String, //Pensar en usar Buffer
   },
   role: {
     type: String,
     enum: ["admin", "challenger"],
-    default: "challenger"
+    default: "challenger",
   },
-  followers: [{
-    user: {
-      type: Schema.Types.ObjectId,
-      ref: 'User'
+  followers: [
+    {
+      user: {
+        type: Schema.Types.ObjectId,
+        ref: "User",
+      },
+      followDate: {
+        type: Date,
+        default: new Date.now(),
+      },
     },
-    followDate: {
-      type: Date,
-      default: new Date.now()
-    }
-  }],
-  following: [{
-    user: {
-      type: Schema.Types.ObjectId,
-      ref: 'User'
+  ],
+  following: [
+    {
+      user: {
+        type: Schema.Types.ObjectId,
+        ref: "User",
+      },
+      followDate: {
+        type: Date,
+        default: new Date.now(),
+      },
     },
-    followDate: {
-      type: Date,
-      default: new Date.now()
-    }
-  }],
+  ],
+  notifications: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: "Notification",
+    },
+  ],
   disabled: {
     type: Boolean,
-    default: false
+    default: false,
   },
   verificationEmail: {
     type: Boolean,
-    default: false
+    default: false,
   },
   createdAt: {
     type: Date,
-    default: new Date.now()
+    default: new Date.now(),
   },
   updatedAt: {
     type: Date,
-    default: new Date.now()
-  }
+    default: new Date.now(),
+  },
 });
 
 module.exports = model("User", UserSchema);
