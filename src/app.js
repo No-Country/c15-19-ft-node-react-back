@@ -2,7 +2,6 @@ const express = require("express");
 const morgan = require("morgan");
 const mainRoutes = require("./routes/mainRoutes.js");
 const server = express();
-
 server.name = "API";
 
 server.use(express.json());

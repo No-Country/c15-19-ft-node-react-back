@@ -8,6 +8,7 @@ const getAllPostsWhithoutUser = async () => {
 
 //muestra de busqueda con el valor del user "relacionado"
 const getAllPostsWhithUser = async () => {
+  responde.id == ObjectId(id);
   const newData = await postModel
     .find()
     .populate("user", "name email -_id")

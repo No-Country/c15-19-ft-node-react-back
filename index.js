@@ -1,7 +1,8 @@
-const server = require("./src/app")
-const connDb = require("./src/db")
+const server = require("./src/app");
+const connDb = require("./src/db");
+const { port } = require("./src/config");
 
-server.listen(3001, () => {
-  connDb()
-  console.log(`Server listening on port: 3001`)
-})
+server.listen(port, () => {
+  connDb();
+  console.log(`Server listening on port: ${port}`);
+});

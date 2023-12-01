@@ -31,6 +31,7 @@ const createPostHandler = async (req, res) => {
       res.status(400).json({ error: "Please complete all fields" });
       return;
     }
+
     const response = await createPost(name, description, userId);
     res.status(200).json(response);
   } catch (error) {
