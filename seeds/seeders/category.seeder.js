@@ -10,6 +10,7 @@ async function seedCategoriesData() {
     const categoryData = [
       { name: "Fitness", disabled: false, challenges: [] },
       { name: "Music", disabled: false, challenges: [] },
+      { name: "Pet", disabled: false, challenges: [] },
     ];
 
     //Insert categories data to db

@@ -60,6 +60,12 @@ const UserSchema = new Schema({
       ref: "Notification",
     },
   ],
+  challenges: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: "Challenge",
+    },
+  ],
   disabled: {
     type: Boolean,
     default: false,
