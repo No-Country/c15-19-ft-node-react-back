@@ -15,17 +15,16 @@ const CommentSchema = new Schema({
     type: String,
     required: true,
   },
-  media: [{
-    url: {
-      type: String,
-      required: true
+  media: [
+    {
+      url: String,
+      typeFile: {
+        type: String,
+        enum: ["image", "video"],
+        required: true,
+      },
     },
-    type: {
-      enum: ["image", "video"],
-      required: true
-    },
-    required: true
-  }],
+  ],
   likes: {
     type: Number,
     default: 0,

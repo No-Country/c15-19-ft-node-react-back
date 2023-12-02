@@ -8,9 +8,8 @@ const notificationSeeder = require("./seeders/notification.seeder");
 
 async function seedAllData() {
   try {
-    //Connect to db and seed data to db
-    await connDb();
     console.log("Start seeding data...");
+    await connDb();
     await categorySeeder();
     await userSeeder();
     await challengeSeeder();
@@ -18,7 +17,6 @@ async function seedAllData() {
     await notificationSeeder();
     console.log("Seeding data successfully");
   } catch (error) {
-    //Catch error and close db connection
     console.error("Error seeding data: " + error);
   } finally {
     if (mongoose.connection.readyState === 1) {
