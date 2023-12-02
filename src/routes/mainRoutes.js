@@ -1,9 +1,12 @@
 const { Router } = require("express");
+const userRouter = require("./user.routes");
+const postRouter = require("./post.routes");
+
 
 const mainRouter = Router();
 
-mainRouter.get("/", (req, res) => {
-  res.status(200).send("ok");
-});
+mainRouter
+  .use("/users", userRouter)
+  .use("/posts", postRouter)
 
 module.exports = mainRouter;

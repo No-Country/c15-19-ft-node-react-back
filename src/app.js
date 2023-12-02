@@ -1,10 +1,7 @@
 const express = require("express");
 const morgan = require("morgan");
-const routes = require("./routes/mainRoutes.js");
-const userRoutes = require("./routes/user.routes.js");
-const initDB = require("./db.js");
+const mainRoutes = require("./routes/mainRoutes.js");
 const server = express();
-
 server.name = "API";
 
 server.use(express.json());
@@ -20,9 +17,6 @@ server.use((req, res, next) => {
   next();
 });
 
-server.use("/", routes);
-server.use("/users", userRoutes);
-
-initDB();
+server.use("/", mainRoutes);
 
 module.exports = server;
