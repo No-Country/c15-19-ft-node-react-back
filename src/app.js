@@ -6,6 +6,7 @@ const server = express();
 server.name = "API";
 
 server.use(express.json());
+server.use(morgan("dev"))
 server.use(fileUpload({
   useTempFiles: true,
   tempFileDir: "./uploads",

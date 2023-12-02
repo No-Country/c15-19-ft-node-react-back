@@ -1,22 +1,45 @@
 const uploadMedia = require("../utils/uploadMedia");
+const pLimit = require("p-limit")
 
-const uploadMediaHandler = async (req, res) => {
+const uploadMultiImageHandler = async (req, res) => {
   try {
-    // console.log(req.body)
-    // console.log(req.files?.image)
-    // console.log(req.files?.video)
+    const limit = pLimit(2)
+    // console.log(req.files.image)
     if (req.files?.image) {
-      req.files.image.mv(`./uploads/${req.files.image.name}`)
-      const result = await uploadMedia(`./uploads/${req.files.image.name}`)
-      console.log(result)
+      const imagesToUpload = req.files.image.map((image) => {
+        image.mv(`./uploads/${image.name}`)
+        return limit(async () => {
+          const result = await uploadMedia(`./uploads/${image.name}`)
+          console.log(`> Result: ${result.secure_url}`);
+          return result
+        })
+      })
+      await Promise.all(imagesToUpload).then(() => {
+        return res.status(200).send("Successfully uploaded")
+      })
+      return
     }
-    // if (req) {
-    //   // console.log(req.files.image)
-    // }
-    console.log("no hay nada")
+    res.status(400).send("Please enter valid image/s")
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
 };
 
-module.exports = { uploadMediaHandler }
+const uploadOneImageHandler = async (req, res) => {
+  try {
+    if (req.files?.image) {
+      const image = req.files?.image
+      image.mv(`./uploads/${image.name}`)
+      const result = await uploadMedia(`./uploads/${image.name}`);
+      console.log(`> Result: ${result.secure_url}`);
+      if (result) {
+        return res.status(200).send("Successfully uploaded")
+      }
+    }
+    res.status(400).send("Please enter valid image/s")
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+}
+
+module.exports = { uploadMultiImageHandler, uploadOneImageHandler }

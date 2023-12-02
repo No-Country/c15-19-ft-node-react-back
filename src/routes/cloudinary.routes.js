@@ -1,9 +1,10 @@
 const { Router } = require("express");
-const { uploadMediaHandler } = require("../handlers/cloudinary.handler");
+const { uploadMultiImageHandler, uploadOneImageHandler } = require("../handlers/cloudinary.handler");
 const cloudinaryRouter = Router();
 
 cloudinaryRouter
-  .post("/", uploadMediaHandler);
+  .post("/", uploadMultiImageHandler)
+  .post("/oneImage", uploadOneImageHandler)
 
 
 module.exports = cloudinaryRouter;
