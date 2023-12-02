@@ -6,48 +6,49 @@ const ChallengeSchema = new Schema({
   user: {
     type: Schema.Types.ObjectId,
     ref: "User",
-    required: true
+    required: true,
   },
   title: {
     type: String,
-    required: true
+    required: true,
   },
   description: {
     type: String,
-    required: true
+    required: true,
   },
-  media: [{
-    url: {
-      type: String,
-      required: true
+  media: [
+    {
+      url: String,
+      typeFile: {
+        type: String,
+        enum: ["image", "video"],
+        required: true,
+      },
     },
-    type: {
-      enum: ["image", "video"],
-      required: true
-    },
-    required: true
-  }],
+  ],
   likes: {
     type: Number,
-    default: 0
+    default: 0,
   },
   category: {
     type: Schema.Types.ObjectId,
     ref: "Category",
-    required: true
+    required: true,
   },
-  comments: [{
-    type: Schema.Types.ObjectId,
-    ref: "Comment"
-  }],
+  comments: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: "Comment",
+    },
+  ],
   createdAt: {
     type: Date,
-    default: new Date.now()
+    default: Date.now(),
   },
   updatedAt: {
     type: Date,
-    default: new Date.now()
-  }
-})
+    default: Date.now(),
+  },
+});
 
-module.exports = model("Challenge", ChallengeSchema)
+module.exports = model("Challenge", ChallengeSchema);
