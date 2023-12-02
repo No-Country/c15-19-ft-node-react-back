@@ -74,6 +74,23 @@ async function seedChallengesData() {
         createdAt: new Date(),
         updatedAt: new Date(),
       },
+      {
+        user: users[3]._id,
+        title: "Foto de tu mascota!",
+        description:
+          "Reto de tomar una foto de tu mascota y compartela con nosotros",
+        likes: 0,
+        media: [
+          {
+            url: "https://ejemplo.com/mascota.jpg",
+            typeFile: "image",
+          },
+        ],
+        category: categories[2]._id,
+        comments: [],
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      },
     ];
 
     //Insert challenges data to db
@@ -85,6 +102,19 @@ async function seedChallengesData() {
     categories[1].challenges.push(challenges[1]._id);
     categories[1].challenges.push(challenges[2]._id);
     await categories[1].save();
+    categories[2].challenges.push(challenges[3]._id);
+    await categories[2].save();
+
+    //Establish the relationship between the user and the challenge
+    users[0].challenges.push(challenges[0]._id);
+    await users[0].save();
+
+    users[2].challenges.push(challenges[1]._id);
+    users[2].challenges.push(challenges[2]._id);
+    await users[2].save();
+
+    users[3].challenges.push(challenges[3]._id);
+    await users[3].save();
 
     console.log(
       `Challenges data seeded successfully. ${challenges.length} challenges created.`
