@@ -1,4 +1,5 @@
-const { Schema, model } = require("mongoose");
+const { Schema, model } = require("mongoose")
+const bcrypt = require("bcrypt")
 
 const UserSchema = new Schema({
   name: {
@@ -82,6 +83,28 @@ const UserSchema = new Schema({
     type: Date,
     default: Date.now(),
   },
-});
+  token: {
+    type: String
+  }
+}, 
+
+
+);
+
+UserSchema.pre('save', async function(next){
+  //Verifica si password ha sido modificado. Si no ha sido verificado llama a next() para pasar alsiguiente proceso
+  if(!this.isModified('password')) {
+      next()
+  }
+
+  //Si el password ha sido modificado genera una cadena aleatoria(salt) y luego es hasheado para encriptar dicho password
+  const salt = await bcrypt.genSalt(10)
+  this.password = await bcrypt.hash(this.password, salt)
+})
+
+// Comparamos la contraseña y devuelve true o false según coincida o no
+UserSchema.methods.checkPassword = async function(passwordForm) {
+  return await bcrypt.compare (passwordForm, this.password)
+}
 
 module.exports = model("User", UserSchema);
