@@ -1,5 +1,4 @@
 const jwt = require('jsonwebtoken');
-
 const UserSchema = require("../models/user.model.js")
 
 const checkAuth = async(req, res, next) => {
@@ -11,9 +10,9 @@ const checkAuth = async(req, res, next) => {
     if(req.headers.authorization && req.headers.authorization.startsWith('Bearer')) {
             try {
                 // ...se extrae el token de autorización y se almacena en la variable token.
-                token = req.headers.authorization.split(' ')[1]
+                jsontoken = req.headers.authorization.split(' ')[1]
 
-                const decoded = jwt.verify(token, process.env.JWT_SECRET)
+                const decoded = jwt.verify(jsontoken, process.env.JWT_SECRET)
 
                 req.user = await UserSchema.findById(decoded.id).select('-password -verificationEmail -challenges -token -createdAt -updatedAt -role -picture -lastname -username -followers -following -notifications -disabled -__v')
 
