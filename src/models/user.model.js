@@ -102,7 +102,7 @@ UserSchema.pre('save', async function(next){
   this.password = await bcrypt.hash(this.password, salt)
 })
 
-// Comparamos la contraseña y devuelve true o false según coincida o no
+// Comparamos la contraseña que insertamos en el form y devuelve true o false según coincida o no
 UserSchema.methods.checkPassword = async function(passwordForm) {
   return await bcrypt.compare (passwordForm, this.password)
 }

@@ -19,7 +19,7 @@ const registerUserController = async (userData) => {
   user.token = generateToken();
   await user.save();
 
-  // Agregar lógica para enviar el mail de confirmación aquí si es necesario
+  // Agregar lógica para enviar el mail de confirmación aquí
 
   return user;
 };

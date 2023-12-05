@@ -1,4 +1,3 @@
-// handlers/user.handler.js
 const { registerUserController } = require('../repositories/register.repository');
 
 const registerUserHandler = async (req, res) => {
