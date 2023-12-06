@@ -3,7 +3,7 @@ const {
   createChallenge,
   updateChallenge,
   deleteChallenge,
-} = require("../repositories/challenge.respository");
+} = require("../repositories/challenge.repository");
 
 const mongoose = require("mongoose");
 
