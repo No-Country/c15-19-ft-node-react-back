@@ -45,14 +45,14 @@ const registerUserController = async ( {email, username, name, lastname, passwor
       throw new Error("La contraseña debe contener al menos una mayúscula, un número y no debe contener espacios en blanco");
     }
     
-    const user = new User({email, username, name, lastname, password, picture});
+    const user = new User({email, username, name, lastname, password});
     user.token = generateToken();
     await user.save();
   
     // Enviar el correo de confirmación
     emailVerifyAccount({ email: user.email, name: user.name, token: user.token });
   
-    return user;
+    // return user;
   };
   
   

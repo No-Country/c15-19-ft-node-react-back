@@ -25,6 +25,7 @@ const UserSchema = new Schema({
   },
   picture: {
     type: String, //Pensar en usar Buffer
+    default: ''
   },
   role: {
     type: String,
