@@ -8,22 +8,21 @@ const categoryCreate = async (name) => {
   return newCategory;
 };
 
-const allCategoriesWithoutChallenges = async () => {
-  const allCategories = await categoryModel.find().select("name disabled");
-  return allCategories;
-};
-const allCategoriesWithChallenges = async (name) => {
-  const allCategories = await categoryModel
-    .find()
-    .populate("challenges", "title description category likes")
-    .select("name disabled challenges");
-  if (name) {
-    const categoriesByName = allCategories.find(
-      (e) => e.name.toLowerCase() === name.toLowerCase()
-    );
-    return categoriesByName;
+const allCategories = async (name, challenge) => {
+  let categories = categoryModel.find().select("name disabled");
+
+  if (name && !challenge) {
+    categories.where({ name });
+  } else if (!name && challenge) {
+    categories.populate("challenges", "title description category likes");
+  } else if (name && challenge) {
+    categories
+      .where({ name })
+      .populate("challenges", "title description category likes");
   }
-  return allCategories;
+
+  const categoriesFilter = await categories.exec();
+  return categoriesFilter;
 };
 
 const deleteCategoryAndChallenges = async (categoryId) => {
@@ -57,7 +56,6 @@ const updateCategory = async (id, data) => {
 module.exports = {
   deleteCategoryAndChallenges,
   categoryCreate,
-  allCategoriesWithoutChallenges,
-  allCategoriesWithChallenges,
+  allCategories,
   updateCategory,
 };

@@ -1,24 +1,33 @@
 const {
   categoryCreate,
-  allCategoriesWithoutChallenges,
-  allCategoriesWithChallenges,
+  allCategories,
   deleteCategoryAndChallenges,
   updateCategory,
 } = require("../repositories/category.repository");
 
-const allCategoryWhithOutChallengesHandler = async (req, res) => {
+const allCategoryHandler = async (req, res) => {
   try {
-    const result = await allCategoriesWithoutChallenges();
-    res.status(200).json(result);
-  } catch (error) {
-    res.status(500).json({ error: error.message });
-  }
-};
-const allCategoryWhithChallengesHandler = async (req, res) => {
-  try {
-    const { name } = req.query;
-    const result = await allCategoriesWithChallenges(name);
-    res.status(200).json(result);
+    const { name, challenge } = req.query;
+    const result = await allCategories(name, challenge);
+
+    const messageName =
+      name && !result.length ? `No categories found with this ${name}` : null;
+
+    const messageChallenge =
+      challenge && !result.length
+        ? "Sorry there are no categories to search for challenges"
+        : null;
+
+    const messageCategory = !result.length
+      ? "Sorry there are no categories"
+      : null;
+
+    const status =
+      messageName || messageChallenge || messageCategory ? 404 : 200;
+
+    const message = messageName || messageChallenge || messageCategory;
+
+    res.status(status).json(message ? { message } : result);
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
@@ -54,8 +63,7 @@ const deleteCategoryHandler = async (req, res) => {
 };
 
 module.exports = {
-  allCategoryWhithChallengesHandler,
-  allCategoryWhithOutChallengesHandler,
+  allCategoryHandler,
   createCategoryHandler,
   updateCategoryHandler,
   deleteCategoryHandler,

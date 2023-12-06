@@ -1,16 +1,14 @@
 const { Router } = require("express");
 const {
-  allCategoryWhithOutChallengesHandler,
   createCategoryHandler,
   updateCategoryHandler,
   deleteCategoryHandler,
-  allCategoryWhithChallengesHandler,
+  allCategoryHandler,
 } = require("../handlers/categories.handler");
 const categoryRouter = Router();
 
 categoryRouter
-  .get("/", allCategoryWhithOutChallengesHandler)
-  .get("/withChallenges", allCategoryWhithChallengesHandler)
+  .get("/", allCategoryHandler)
   .post("/", createCategoryHandler)
   .patch("/:id", updateCategoryHandler)
   .delete("/:id", deleteCategoryHandler);
