@@ -10,6 +10,7 @@ mainRouter
   .use("/users", userRouter)
   .use("/posts", postRouter)
   .use("/cloudinary", cloduinaryRouter)
-  .use("/categories", categoriesRouter);
+  .use("/categories", categoriesRouter)
+  .use("/challenges", challengesRouter);
 
 module.exports = mainRouter;

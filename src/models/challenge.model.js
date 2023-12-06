@@ -19,6 +19,7 @@ const ChallengeSchema = new Schema({
   media: [
     {
       url: String,
+      public_id: String,
       typeFile: {
         type: String,
         enum: ["image", "video"],
@@ -30,7 +31,7 @@ const ChallengeSchema = new Schema({
     type: Number,
     default: 0,
   },
-  category: {
+  categoryId: {
     type: Schema.Types.ObjectId,
     ref: "Category",
     required: true,
