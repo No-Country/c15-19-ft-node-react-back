@@ -41,7 +41,7 @@ const createChallengeHandler = async (req, res) => {
       user,
       title,
       description,
-      categoryId
+      categoryId,
     );
     res.status(200).json(response);
   } catch (error) {

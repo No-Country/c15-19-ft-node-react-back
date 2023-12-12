@@ -5,10 +5,10 @@ const {emailVerifyAccount} = require('../helpers/sendEmail')
 
 const registerUserController = async ( {email, username, name, lastname, password, picture}) => {
 
-    email = email.trim();
-    username = username.trim();
-    name = name.trim();
-    lastname = lastname.trim();  
+    // email = email.trim();
+    // username = username.trim();
+    // name = name.trim();
+    // lastname = lastname.trim();  
   
     // Validaciones
     const nameContainsNumber = /\d/.test(name);
