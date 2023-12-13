@@ -1,5 +1,6 @@
 const challengeModel = require("../models/challenge.model");
 const categoryModel = require("../models/category.model");
+const userModel = require("../models/user.model");
 
 const allChallenge = async () => {
   const allChallenges = await challengeModel.find();
@@ -16,6 +17,10 @@ const createChallenge = async (user, title, description, categoryId, media) => {
   const category = await categoryModel.findById(categoryId);
   category.challenges.push(newChallenge._id);
   await category.save();
+
+  const userFound = await userModel.findById(user);
+  userFound.challenges.push(newChallenge._id);
+  await userFound.save();
   return newChallenge;
 };
 
