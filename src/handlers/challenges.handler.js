@@ -19,7 +19,10 @@ const allChallengeHandler = async (req, res) => {
 };
 const createChallengeHandler = async (req, res) => {
   try {
-    const { user, title, description, categoryId, typeFile } = req.body;
+    const { user, title, description, categoryId, typeFile, hashtags } =
+      req.body;
+    console.log(hashtags);
+
     if (req.files?.media) {
       try {
         media = await cloudinaryUtil.formatedData(req.files.media);
@@ -29,6 +32,7 @@ const createChallengeHandler = async (req, res) => {
             title,
             description,
             categoryId,
+            hashtags,
             media
           );
           return res.status(200).json(response);
@@ -41,13 +45,34 @@ const createChallengeHandler = async (req, res) => {
       user,
       title,
       description,
-      categoryId
+      categoryId,
+      hashtags
     );
     res.status(200).json(response);
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
 };
+
+const handleHashtags = async (hashtags) => {
+  const hashtagIds = [];
+
+  for (const hashtag of hashtags) {
+    // Intenta encontrar el hashtag existente
+    let hashtagObj = await Hashtag.findOne({ name: hashtag });
+
+    // Si no se encuentra, crea un nuevo hashtag
+    if (!hashtagObj) {
+      hashtagObj = await Hashtag.create({ name: hashtag });
+    }
+
+    // hashtagObj ahora contiene el hashtag existente o recién creado
+    hashtagIds.push(hashtagObj._id);
+  }
+
+  return hashtagIds;
+};
+
 const updateChallengeHandler = async (req, res) => {
   try {
     const { id } = req.params;

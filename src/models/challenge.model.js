@@ -42,6 +42,12 @@ const ChallengeSchema = new Schema({
       ref: "Comment",
     },
   ],
+  hashtags: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: "Hashtag",
+    },
+  ],
   createdAt: {
     type: Date,
     default: Date.now(),
