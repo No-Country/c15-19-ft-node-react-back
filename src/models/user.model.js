@@ -86,7 +86,13 @@ const UserSchema = new Schema({
   },
   token: {
     type: String
-  }
+  } , 
+  favoriteChallenges: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: "Challenge",
+    },
+  ],
 }, 
 
 
