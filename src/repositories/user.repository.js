@@ -16,7 +16,21 @@ const getAllUsers = async (filter, skip, take) => {
 
 const getUserById = async (id) => {
   if (!mongoose.Types.ObjectId.isValid(id)) throw new Error("Invalid ID");
-  const user = await userModel.findById(id).select("-password");
+  const user = await userModel
+    .findById(id)
+    .select("-password -verificationEmail -notifications")
+    .populate({
+      path: "challenges",
+      select: "title description media.url media.typeFile",
+    });
+
+  // Limitar a 1 el número de retos que se devuelven(Refactorizar(Mala practica))
+  user.challenges.forEach((challenge) => {
+    if (challenge.media && challenge.media.length > 0) {
+      challenge.media = [challenge.media[0]];
+    }
+  });
+
   return user;
 };
 
