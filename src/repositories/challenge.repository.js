@@ -14,6 +14,7 @@ const createChallenge = async (user, title, description, categoryId, media) => {
     categoryId,
     media,
   });
+
   const category = await categoryModel.findById(categoryId);
   category.challenges.push(newChallenge._id);
   await category.save();
