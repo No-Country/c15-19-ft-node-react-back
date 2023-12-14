@@ -25,8 +25,8 @@ const emailVerifyAccount = async (datos) => {
       text: "Comprueba tu cuenta en Chalenger",
       html: `<p>Hola: ${name}, Verifica tu cuenta en ChallengeMe y comienza con nuevos desafíos!!</p>
       <p>Tu cuenta ya esta casi lista, solo debes comprobarla en el siguiente enlace: 
-  
-      <a href="http://localhost:3001/auth/verify-account/${token}">Verifica tu cuenta para poder ser un Challenger</a>
+      
+      <a href="https://challenge-me-backend-uu82.onrender.com/auth/verify-account/${token}">Verifica tu cuenta para poder ser un Challenger</a>
       
       <p>Si tu no creaste esta cuenta, puedes ignorar el mensaje</p>
       
