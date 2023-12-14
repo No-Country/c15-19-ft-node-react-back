@@ -4,6 +4,7 @@ const {
   updateChallenge,
   deleteChallenge,
 } = require("../repositories/challenge.repository");
+const Hashtag = require("../models/hashtag.model");
 
 const mongoose = require("mongoose");
 
@@ -21,7 +22,8 @@ const createChallengeHandler = async (req, res) => {
   try {
     const { user, title, description, categoryId, typeFile, hashtags } =
       req.body;
-    console.log(hashtags);
+
+    const hashtagIds = await handleHashtags(hashtags);
 
     if (req.files?.media) {
       try {
@@ -32,7 +34,7 @@ const createChallengeHandler = async (req, res) => {
             title,
             description,
             categoryId,
-            hashtags,
+            hashtagIds,
             media
           );
           return res.status(200).json(response);
@@ -59,15 +61,9 @@ const handleHashtags = async (hashtags) => {
 
   for (const hashtag of hashtags) {
     // Intenta encontrar el hashtag existente
-    let hashtagObj = await Hashtag.findOne({ name: hashtag });
+    console.log(hashtag);
 
     // Si no se encuentra, crea un nuevo hashtag
-    if (!hashtagObj) {
-      hashtagObj = await Hashtag.create({ name: hashtag });
-    }
-
-    // hashtagObj ahora contiene el hashtag existente o recién creado
-    hashtagIds.push(hashtagObj._id);
   }
 
   return hashtagIds;

@@ -10,10 +10,10 @@ const createChallenge = async (
   title,
   description,
   categoryId,
-  media,
-  hashtags
+  hashtagIds,
+  media
 ) => {
-  console.log(user, title, description, categoryId, hashtags, media);
+  console.log(hashtagIds);
   const newChallenge = await challengeModel.create({
     user,
     title,
