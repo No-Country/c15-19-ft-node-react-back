@@ -14,7 +14,7 @@ const registerUserHandler = async (req, res) => {
         "Usuario registrado exitosamente, por favor revise su correo para verificar su cuenta",
     });
   } catch (error) {
-    res.status(400).json({ msg: error.message });
+    res.status(400).json({ message: error.message });
   }
 };
 
@@ -25,7 +25,7 @@ const authenticateUserHandler = async (req, res) => {
 
     res.json(userData);
   } catch (error) {
-    res.status(400).json({ message: error.message });
+    res.status(500).json({ message: error.message });
   }
 };
 
