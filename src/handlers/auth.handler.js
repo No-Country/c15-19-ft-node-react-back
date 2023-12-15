@@ -1,4 +1,8 @@
-const { registerUserController, verifyAccount, authenticateUser } = require('../repositories/auth.repository');
+const {
+  registerUserController,
+  verifyAccount,
+  authenticateUser,
+} = require("../repositories/auth.repository");
 
 const registerUserHandler = async (req, res) => {
   try {
@@ -6,7 +10,8 @@ const registerUserHandler = async (req, res) => {
     await registerUserController(userData);
 
     res.json({
-      msg: "Usuario creado correctamente, hemos enviado un mail a tu casilla de correo para que confirmes tu cuenta, tienes 15 días para hacerlo, de lo contrario deberas hacer el registro nuevamente",
+      message:
+        "Usuario registrado exitosamente, por favor revise su correo para verificar su cuenta",
     });
   } catch (error) {
     res.status(400).json({ msg: error.message });
@@ -20,7 +25,7 @@ const authenticateUserHandler = async (req, res) => {
 
     res.json(userData);
   } catch (error) {
-     res.status(400).json({ msg: error.message });
+    res.status(400).json({ message: error.message });
   }
 };
 
@@ -29,24 +34,23 @@ const verifyAccountHandler = async (req, res) => {
     const { token } = req.params;
     const userVerified = await verifyAccount(token);
 
-    res.json({ msg: 'Su cuenta ha sido verificada Exitosamente!!' });
+    res.json({ message: "Su cuenta ha sido verificada Exitosamente!!" });
     console.log(userVerified);
   } catch (error) {
     console.log(error);
-    res.status(403).json({ msg: error.message });
+    res.status(403).json({ message: error.message });
   }
 };
 
-const profile = (req,res) => {
-    const { user } = req
+const profile = (req, res) => {
+  const { user } = req;
 
-    res.json(user)
-}
-
+  res.json(user);
+};
 
 module.exports = {
   registerUserHandler,
   verifyAccountHandler,
   authenticateUserHandler,
-  profile
+  profile,
 };
