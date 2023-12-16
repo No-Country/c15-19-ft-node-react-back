@@ -1,14 +1,16 @@
 const challengeModel = require("../models/challenge.model");
 const categoryModel = require("../models/category.model");
 const userModel = require("../models/user.model");
+const hashtagModel = require("../models/hashtag.model");
+// const commentModel = require("../models/comment.model");
 
 const allChallenge = async () => {
-
   const allChallenges = await challengeModel
     .find()
     .populate("hashtags", "name -_id");
   return allChallenges;
 };
+
 const createChallenge = async (
   user,
   title,
@@ -37,35 +39,49 @@ const createChallenge = async (
 };
 
 const updateChallenge = async (id, data) => {
-  const updatedChallenge = await challengeModel.findByIdAndUpdate(id, data);
-  if (data.categoryId) {
-    const categoryId = updatedChallenge.categoryId;
-    const category = await categoryModel.findById(categoryId);
-    if (category) {
-      //elimino el challenges de la lista challenges que se encuentra en category
-      category.challenges.pull(updatedChallenge._id);
+  const foundChallenge = await challengeModel.findById(id);
+  console.log(foundChallenge);
+  const updatedChallenge = await challengeModel.findOneAndUpdate(
+    { _id: id },
+    data,
+    {
+      new: true,
+      rawResult: true,
+    }
+  );
+  console.log(updatedChallenge);
+  if (updatedChallenge.lastErrorObject.updatedExisting) {
+    if (data.categoryId) {
+      const category = await categoryModel.findById(foundChallenge.categoryId);
+      category.challenges.pull(foundChallenge._id);
       await category.save(); // Guardo los cambios
       const categoryNew = await categoryModel.findById(data.categoryId);
-      //agrego el challenges a la nueva categoria pasada
-      categoryNew.challenges.push(updatedChallenge._id);
+      categoryNew.challenges.push(foundChallenge._id);
       await categoryNew.save();
     }
+    return "Challenge updated succesfully";
   }
-  //Esto lo hago para mostrar el challenge actualiado al cliente
-  if (updatedChallenge) {
-    const foundChallenge = await challengeModel.findById(id);
-    return foundChallenge;
-  }
+  return [];
 };
 
 const deleteChallenge = async (challengeId) => {
   const challenge = await challengeModel.findById(challengeId);
   if (challenge) {
     const category = await categoryModel.findById(challenge.categoryId);
+    const hashtags = await hashtagModel.findById(challenge.hashtags);
+    // const comments = await commentModel.findById(challenge.comments);
     if (category) {
       category.challenges.pull(challengeId);
       await category.save();
     }
+    if (hashtags) {
+      hashtags.challenges.pull(challengeId);
+      await hashtags.save();
+    }
+    // if (category) {
+    //   category.challenges.pull(challengeId);
+    //   await category.save();
+    // }
     await challengeModel.deleteOne({ _id: challengeId });
     return challenge;
   }

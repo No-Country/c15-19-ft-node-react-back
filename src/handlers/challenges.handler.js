@@ -18,8 +18,7 @@ const allChallengeHandler = async (req, res) => {
 };
 const createChallengeHandler = async (req, res) => {
   try {
-    const { user, title, description, categoryId, typeFile, hashtags } =
-      req.body;
+    const { user, title, description, categoryId, hashtags } = req.body;
     const hashtagIds = await handleHashtags(hashtags);
 
     if (req.files?.media) {
@@ -77,13 +76,34 @@ const handleHashtags = async (hashtags) => {
 
 const updateChallengeHandler = async (req, res) => {
   try {
+    // const response = await updateChallenge(id, req.body);
     const { id } = req.params;
-    const { title, description, categoryId } = req.body;
-    if (title || description || categoryId) {
-      const response = await updateChallenge(id, req.body);
-      return res.status(200).json(response);
+    const response = await updateChallenge(id, req.body);
+    if (!Object.keys(req.body).length) {
+      return res.status(404).send({ error: "No data provided to change." });
+    }
+    if (req.body && response.length) {
+      return res.status(200).json({ message: response });
+    } else {
+      return res.status(404).send({ error: "Challenge not found" });
     }
   } catch (error) {
+    console.log(error);
+    if (error.name === "CastError" && error.kind === "ObjectId") {
+      // Este es un error de cast de ObjectId, puedes personalizar el mensaje aquí
+      return res.status(404).json({
+        error: `The ${error.path} provided is invalid or was not found.`,
+      });
+    }
+    if (
+      error instanceof TypeError &&
+      error.message.includes("Cannot set properties of null")
+    ) {
+      return res.status(500).json({
+        error:
+          "An error occurred while processing the request: Cannot set properties of null.",
+      });
+    }
     res.status(500).json({ error: error.message });
   }
 };
