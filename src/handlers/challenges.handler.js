@@ -4,9 +4,8 @@ const {
   updateChallenge,
   deleteChallenge,
 } = require("../repositories/challenge.repository");
-
+const Hashtag = require("../models/hashtag.model");
 const mongoose = require("mongoose");
-
 const cloudinaryUtil = require("../utils/uploadMedia");
 
 const allChallengeHandler = async (req, res) => {
@@ -19,7 +18,10 @@ const allChallengeHandler = async (req, res) => {
 };
 const createChallengeHandler = async (req, res) => {
   try {
-    const { user, title, description, categoryId, typeFile } = req.body;
+    const { user, title, description, categoryId, typeFile, hashtags } =
+      req.body;
+    const hashtagIds = await handleHashtags(hashtags);
+
     if (req.files?.media) {
       try {
         media = await cloudinaryUtil.formatedData(req.files.media);
@@ -29,6 +31,7 @@ const createChallengeHandler = async (req, res) => {
             title,
             description,
             categoryId,
+            hashtagIds,
             media
           );
           return res.status(200).json(response);
@@ -42,12 +45,38 @@ const createChallengeHandler = async (req, res) => {
       title,
       description,
       categoryId,
+
+      hashtagIds
+
     );
     res.status(200).json(response);
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
 };
+
+const handleHashtags = async (hashtags) => {
+  const hashtagIds = [];
+
+  for (const hashtag of hashtags) {
+    try {
+      // Intenta encontrar el hashtag existente
+      const existingHashtag = await Hashtag.findOne({ name: hashtag });
+      // Si se encuentra, obtén su ID
+      if (existingHashtag) {
+        hashtagIds.push(existingHashtag._id);
+      } else {
+        // Si no se encuentra, crea un nuevo hashtag
+        const newHashtag = await Hashtag.create({ name: hashtag });
+        hashtagIds.push(newHashtag._id);
+      }
+    } catch (error) {
+      console.error(`Error al manejar el hashtag ${hashtag}: ${error.message}`);
+    }
+  }
+  return hashtagIds;
+};
+
 const updateChallengeHandler = async (req, res) => {
   try {
     const { id } = req.params;
