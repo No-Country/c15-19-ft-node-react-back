@@ -14,11 +14,9 @@ const allCategories = async (name, challenge) => {
   if (name && !challenge) {
     categories.where({ name });
   } else if (!name && challenge) {
-    categories.populate("challenges", "title description category likes");
+    categories.populate("challenges");
   } else if (name && challenge) {
-    categories
-      .where({ name })
-      .populate("challenges", "title description category likes");
+    categories.where({ name }).populate("challenges");
   }
 
   const categoriesFilter = await categories.exec();
