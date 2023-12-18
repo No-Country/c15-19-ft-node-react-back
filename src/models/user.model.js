@@ -1,7 +1,8 @@
 const { Schema, model } = require("mongoose")
 const bcrypt = require("bcrypt")
+const mongoose = require("mongoose");
 
-const UserSchema = new Schema({
+const UserSchema = mongoose.Schema({
   name: {
     type: String,
     required: true,
@@ -86,7 +87,13 @@ const UserSchema = new Schema({
   },
   token: {
     type: String
-  }
+  } , 
+  favoriteChallenges: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: 'Challenge',
+    },
+  ]
 }, 
 
 
