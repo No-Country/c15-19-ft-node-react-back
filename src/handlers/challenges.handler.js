@@ -20,6 +20,8 @@ const createChallengeHandler = async (req, res) => {
   try {
     const { user, title, description, categoryId, typeFile, hashtags } =
       req.body;
+
+    if (!hashtags) throw new Error("Hashtags are required");
     const hashtagIds = await handleHashtags(hashtags);
 
     if (req.files?.media) {

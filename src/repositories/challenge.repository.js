@@ -3,10 +3,7 @@ const categoryModel = require("../models/category.model");
 const userModel = require("../models/user.model");
 
 const allChallenge = async () => {
-
-  const allChallenges = await challengeModel
-    .find()
-    .populate("hashtags", "name -_id");
+  const allChallenges = await challengeModel.find();
   return allChallenges;
 };
 const createChallenge = async (
@@ -14,7 +11,7 @@ const createChallenge = async (
   title,
   description,
   categoryId,
-  hashtagIds,
+  //hashtagIds,
   media
 ) => {
   const newChallenge = await challengeModel.create({
@@ -22,7 +19,7 @@ const createChallenge = async (
     title,
     description,
     categoryId,
-    hashtags: hashtagIds,
+    //    hashtags: hashtagIds,
     media,
   });
 
