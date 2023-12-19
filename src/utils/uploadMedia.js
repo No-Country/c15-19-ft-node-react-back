@@ -7,10 +7,7 @@ const cloudinaryUtil = {
   },
   formatedData: async (files) => {
     const imagesToUpload = files.map(async (image) => {
-      image.mv(`./uploads/${image.name}`);
-      const result = await cloudinaryUtil.uploadImage(
-        `./uploads/${image.name}`
-      );
+      const result = await cloudinaryUtil.uploadImage(image.tempFilePath);
       return result;
     });
     const result = await Promise.all(imagesToUpload);
