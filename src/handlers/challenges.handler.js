@@ -49,7 +49,6 @@ const createChallengeHandler = async (req, res) => {
       categoryId,
 
       hashtagIds
-
     );
     res.status(200).json(response);
   } catch (error) {

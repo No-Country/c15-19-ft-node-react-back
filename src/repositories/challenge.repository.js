@@ -11,7 +11,7 @@ const createChallenge = async (
   title,
   description,
   categoryId,
-  //hashtagIds,
+  hashtagIds,
   media
 ) => {
   const newChallenge = await challengeModel.create({
@@ -19,7 +19,7 @@ const createChallenge = async (
     title,
     description,
     categoryId,
-    //    hashtags: hashtagIds,
+    hashtags: hashtagIds,
     media,
   });
 
